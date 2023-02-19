@@ -1,0 +1,95 @@
+"""
+Why Django should be used for web-development?
+Explain how you can create a project in Django?
+"""
+
+"""
+Django is a high-level Python web framework that enables rapid development of secure and maintainable websites. 
+Built by experienced developers, Django takes care of much of the hassle of web development, 
+so you can focus on writing your app without needing to reinvent the wheel.
+"""
+#mkdir django_project
+#cd django_project
+#python -m venv venv
+#venv\Scripts\activate
+#pip install django
+#django-admin --version
+#django-admin startproject test_project
+#cd test_project
+
+
+
+--------------------------------------------------------
+#How to check installed version of django?
+
+#python -m django --version
+
+---------------------------------------------------------
+#Explain what does django-admin.py 
+make messages command is used for?
+
+It creates (or updates) a message file in the conf/locale 
+(in the Django tree) or locale (for project and application) directory.
+
+------------------------------------------------------------------------------
+#What is Django URLs?make program to create django urls
+
+"""
+Django runs through each URL pattern, in order, and stops at the first one that matches the requested URL,
+matching against path_info . Once one of the URL patterns matches,
+Django imports and calls the given view, which is a Python function (or a class-based view).
+"""
+
+from django.urls import path
+from .import views
+
+urlpatterns = [
+    path('',views.index,name='index'),
+    path('contact/',views.contact,name='contact'),
+    path('signup/',views.signup,name='signup'),
+    path('login/',views.login,name='login'),
+    path ('logout/',views.logout,name='logout'),
+]
+
+---------------------------------------------------------------------------------------
+#What is a QuerySet?Write program to create a new Post object in database:
+
+"""
+A QuerySet is a collection of data from a database.
+A QuerySet is built up as a list of objects.
+QuerySets makes it easier to get the data you actually need, by allowing you to filter and order the data.
+In this tutorial we will be querying data from the Members table.
+"""
+
+def contact(request):
+    if request.method=="POST":
+        Contact.objects.create(
+            name=request.POST['name'],
+            email=request.POST['email'],
+            mobile=request.POST['mobile'],
+            remarks=request.POST['remarks']
+        )
+        msg="Contact Saved Successfully"
+        Contacts=Contact.objects.all().order_by("-id")[:5]
+        return render(request,'contact.html',{'msg':msg},{'Contacts':Contacts})
+
+    else:
+        Contacts=Contact.objects.all().order_by("-id")[:5]
+        return render(request,'contact.html',{'Contacts':Contacts})
+
+---------------------------------------------------------------------------------------
+#Mention what command line can be used to load data into Django?
+"""
+To load data into Django you have to use the command line Django-admin.py loaddata.
+The command line will searches the data and loads the contents of the named fixtures into the database.
+"""
+
+--------------------------------------------------------------------------------------------------
+#Explain what does django-admin.py make messages command is used for?
+
+"""
+This command line executes over the entire source tree of the current directory and abstracts all the strings marked for translation.
+It makes a message file in the locale directory.
+"""
+
+-----------------------------------------------------------------------------------------------------
